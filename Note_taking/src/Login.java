@@ -106,7 +106,7 @@ public class Login extends JPanel implements ActionListener {
 			cl.show(this, "register");
 		}
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IllegalAccessException, InstantiationException, SQLException {
 		JFrame frame = new JFrame("Note-taking editor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);;
 		frame.setSize(500, 500);
@@ -115,12 +115,12 @@ public class Login extends JPanel implements ActionListener {
 		frame.setVisible(true);
 		
 		DBConnection newConnection = new DBConnection();
-//		createConnection();
-//		System.out.println("Connected");
-//        insertRestaurants(111, "Minh Tran Cong", "Berkeley");
-//        selectRestaurants();
-//        shutdown();
-		
+		User user = new User("minh","minh");
+//		newConnection.insertUser(user);
+		User user2 = newConnection.checkUser("minh");
+		if(user2 != null) {
+			System.out.println("Tim duoc Minh roi: "+user2.getUserName());
+		}
 	}
 	
 //	private static void createConnection()
