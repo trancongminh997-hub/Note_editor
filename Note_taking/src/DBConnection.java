@@ -1,17 +1,23 @@
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Properties;
+import java.sql.Statement;
 
 public class DBConnection {
 	private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 	private static final String JDBC_URL = "jdbc:derby:EDITOR;create=true";
 	
-	Connection conn;
+	static Connection conn;
 	
 	
-	public DBConnection() {
+	public DBConnection() throws IllegalAccessException, InstantiationException {
 		try
         {
             Class.forName(DRIVER).newInstance();
@@ -40,36 +46,132 @@ public class DBConnection {
 	}
 	
 
-	public static void createSchema() throws SQLException, ClassNotFoundException {
+	public static void createSchema() throws SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 		try {
-			Class.forName(DRIVER).newInstance();
-			Connection connect = DriverManager.getConnection(JDBC_URL);
-			connect.createStatement().execute("Create table APP.Owner( ID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), userName VARCHAR(30) UNIQUE NOT NULL, password VARCHAR(30) NOT NULL)");
-			connect.createStatement().execute("Create table APP.Note(  ID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), content VARCHAR(255) NOT NULL, createdDate DATE, alertDate DATE, ownerID INTEGER REFERENCES APP.Owner(ID))");
+//			Class.forName(DRIVER).newInstance();
+//			Connection connect = DriverManager.getConnection(JDBC_URL);
+			conn.createStatement().execute("Create table APP.Owner( ID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), userName VARCHAR(30) UNIQUE NOT NULL, password VARCHAR(30) NOT NULL)");
+			conn.createStatement().execute("Create table APP.Note(  ID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), content VARCHAR(255) NOT NULL, title VARCHAR(50) NOT NULL, createdDate DATE, alertDate DATE, ownerID INTEGER REFERENCES APP.Owner(ID))");
+//			connect.createStatement().execute("Drop table APP.Note");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 //			e.printStackTrace();
 			
 			System.out.println("Tables already exist!");
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 	}
-	public void insert(String tableName, String value) {
-		try {
-			this.conn.createStatement().execute("Insert into "+tableName+" values ("+value+")");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//	public void insert(String statement) {
+//		try {
+//			this.conn.createStatement().execute("Insert into "+tableName+" values ("+value+")");
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//	}
+//	public void delete(String table) {
+//		
+//	}
+	public void insertUser(User user) throws SQLException {
+		 PreparedStatement psInsert;
+//	     PreparedStatement psUpdate;
+	     ArrayList<Statement> statements = new ArrayList<Statement>();
+	     
+	     psInsert = conn.prepareStatement("insert into APP.Owner (userName,password) values (?, ?)");
+	     statements.add(psInsert);
+
+	     
+	     psInsert.setString(1, user.getUserName());
+	     psInsert.setString(2, user.getPassword());
+	     psInsert.executeUpdate();
+	     System.out.println("Inserted "+user.getUserName());
+	}
+	
+	@SuppressWarnings("null")
+	public User checkUser(String userName) throws SQLException {
+		Statement s = null;
+		ResultSet rs;
+				
+		s = conn.createStatement();
+		rs = s.executeQuery("SELECT * FROM APP.Owner WHERE userName = '"+userName+"'");
+		
+		if (!rs.next()) {
+			return null;
+        }
+		User reUser = new User();
+		reUser.setuserId(rs.getInt(1));
+		reUser.setUserName(rs.getString(2));
+		reUser.setPassword(rs.getString(3));
+		s.close();
+		rs.close();
+		return reUser;
+	}
+	public ArrayList<Note> browseNoteList(int userId) throws SQLException {
+		Statement s = null;
+		ResultSet rs;
+		s = conn.createStatement();
+		rs = s.executeQuery("SELECT * FROM APP.Note WHERE ownerID = '"+userId+"'");
+		if (!rs.next()) {
+			System.out.println("There 's no note");
+			return null;
 		}
 		
+		ArrayList<Note> notelist = new ArrayList<Note>();
+		while(rs.next()){
+			Note newNote = new Note();
+			newNote.setNoteId(rs.getInt(1));
+			newNote.setContent(rs.getString(2));
+			newNote.setTitle(rs.getString(3));
+			newNote.setCreatedDate(rs.getDate(4));
+			newNote.setAlertDate(rs.getDate(5));
+			newNote.setOwnerId(rs.getInt(6));
+			notelist.add(newNote);
+		}
+		return notelist;
 	}
-	public void delete(String table) {
-		
+	public void insertNote(Note note) throws SQLException {
+		PreparedStatement psInsert;
+//	     PreparedStatement psUpdate;
+	    ArrayList<Statement> statements = new ArrayList<Statement>();
+
+	    psInsert = conn.prepareStatement("insert into APP.Note (content, title, createdDate, alertDate, ownerID) values (?, ?)");
+	    statements.add(psInsert);
+
+	     
+	    psInsert.setString(1, note.getContent());
+	    psInsert.setString(2, note.getTitle());
+	    psInsert.setDate(3, (Date) note.getCreatedDate());
+	    psInsert.setDate(4, (Date) note.getAlertDate());
+	    psInsert.setInt(5, note.getOwnerId());
+	    psInsert.executeUpdate();
+	    System.out.println("Note "+note.getTitle()+" inserted!");
 	}
+	public void updateNote(Note noteUpdated) throws SQLException {
+//		Optional<String> contentOpt, Optional<String> titleOpt, Optional<Date> alertedDateOpt) {
+//		if(!contentOpt.isPresent() && !titleOpt.isPresent() && !alertedDateOpt.isPresent()) {}
+//		else {
+//			String content = contentOpt.isPresent() ? "content" : "";
+//			String content_val = contentOpt.isPresent() ? contentOpt.get() : "";
+//			
+//			String title = titleOpt.isPresent() ? "title" : "";
+//			String title_val = titleOpt.isPresent() ? titleOpt.get() : "";
+//			
+//			String alertDate = alertedDateOpt.isPresent() ? "alertDate" : "";
+//			Date alertDate_val = alertedDateOpt.isPresent() ? alertedDateOpt.get() : ;
+//		}
+		PreparedStatement psUpdate;
+	    ArrayList<Statement> statements = new ArrayList<Statement>();
+
+	    psUpdate = conn.prepareStatement("update APP.Note set content=?, title=?, alertDate=? where ID=?");
+	    statements.add(psUpdate);
+	    
+	    psUpdate.setString(1, noteUpdated.getContent());
+	    psUpdate.setString(2, noteUpdated.getTitle());
+	    psUpdate.setDate(3, (Date) noteUpdated.getAlertDate());
+	    psUpdate.setInt(4, noteUpdated.getNoteId());
+	    psUpdate.executeQuery();
+	    System.out.println("Updated");
+	}
+	
 }
