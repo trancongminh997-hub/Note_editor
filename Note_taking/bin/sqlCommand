@@ -1,0 +1,7 @@
+
+create table APP.thu(
+	id integer,
+	name varchar(50) unique not null,
+	password varchar(100) not null
+);
+select * from app.thu;
