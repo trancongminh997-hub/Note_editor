@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Fri Dec 07 20:47:59 ICT 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0167-88ec-cbf7-00000e3920b8 
+Fri Dec 07 23:23:25 ICT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0167-897b-1af4-00000e391d60 
 on database directory C:\Users\OS\git\Note_taking1\Note_taking\EDITOR with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
 Loaded from file:/C:/Users/OS/git/Note_taking1/Note_taking/lib/derby.jar
 java.vendor=Oracle Corporation
