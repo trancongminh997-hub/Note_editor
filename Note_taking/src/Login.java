@@ -85,9 +85,12 @@ public class Login extends JPanel implements ActionListener {
 					sb.append(Integer.toString((byteData[i] & 0xFF) + 0x100, 16).substring(1));
 				//and then compare these two
 				if(pass.equals(sb.toString())) {
-					add(new FileBrowser(userTF.getText()),"fb");
+					//add(new FileBrowser(userTF.getText()),"fb");
+					add(new FileBrowser(),"fb");
 					cl.show(this, "fb");
 					System.out.println("You have loged in");
+					passTF.setText("");
+					userTF.setText("");
 				}
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
@@ -102,6 +105,8 @@ public class Login extends JPanel implements ActionListener {
 			
 		}
 		if(e.getSource() == register) {
+			passTF.setText("");
+			userTF.setText("");
 			add(new Register(), "register");
 			cl.show(this, "register");
 		}
@@ -115,11 +120,11 @@ public class Login extends JPanel implements ActionListener {
 		frame.setVisible(true);
 		
 		DBConnection newConnection = new DBConnection();
-		User user = new User("minh","minh");
+		User user = new User("phuc","minh");
 //		newConnection.insertUser(user);
-		User user2 = newConnection.checkUser("minh");
+		User user2 = newConnection.checkUser("phuc");
 		if(user2 != null) {
-			System.out.println("Tim duoc Minh roi: "+user2.getUserName());
+			System.out.println("Tim duoc Minh roi: "+user2.getPassword());
 		}
 	}
 }

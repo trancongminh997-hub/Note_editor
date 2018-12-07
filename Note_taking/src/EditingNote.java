@@ -32,9 +32,9 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 import org.jdatepicker.impl.UtilDateModel;
 
-import net.codejava.swing.DateLabelFormatter;
+//import net.codejava.swing.DateLabelFormatter;
 
-public class Writing_note extends JApplet implements ActionListener {
+public class EditingNote extends JApplet implements ActionListener {
 	//Set date picker
 	SqlDateModel model = new SqlDateModel();
 	JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
@@ -49,7 +49,7 @@ public class Writing_note extends JApplet implements ActionListener {
 	JPanel Writing_note = new JPanel(new GridLayout(4,2));
 //	JPanel panel = new JPanel();
 	
-	public Writing_note(){
+	public EditingNote(){
 		save.addActionListener(this);
 		delete.addActionListener(this);
 		back.addActionListener(this);
