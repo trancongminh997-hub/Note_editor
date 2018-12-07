@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +13,12 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.sql.Date;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import javax.swing.GroupLayout;
+import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,11 +29,14 @@ import javax.swing.JTextField;
 //Date pickle
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
 import org.jdatepicker.impl.UtilDateModel;
 
-public class Writing_note extends JPanel implements ActionListener {
+import net.codejava.swing.DateLabelFormatter;
+
+public class Writing_note extends JApplet implements ActionListener {
 	//Set date picker
-	UtilDateModel model = new UtilDateModel();
+	SqlDateModel model = new SqlDateModel();
 	JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
 	JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 	//Set labels and buttons
@@ -40,31 +47,61 @@ public class Writing_note extends JPanel implements ActionListener {
 	JTextField titleTF = new JTextField();
 	JTextArea noteArea = new JTextArea(20,40);
 	JPanel Writing_note = new JPanel(new GridLayout(4,2));
-	JPanel panel = new JPanel();
-	//Create Writing_note frame
+//	JPanel panel = new JPanel();
+	
 	public Writing_note(){
 		save.addActionListener(this);
 		delete.addActionListener(this);
 		back.addActionListener(this);
-		add(save);
-		add(delete);
-		add(back);
-		add(alertL);
-		add(datePicker);
-		add(noteArea,BorderLayout.CENTER);
+		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container contentPane = frame.getContentPane();
+		GroupLayout layout = new GroupLayout(contentPane);
+		
+		contentPane.setLayout(layout);
+	
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+		
+		layout.setHorizontalGroup(
+				   layout.createSequentialGroup()
+				      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				    		  .addComponent(save)
+				    		  .addComponent(alertL)
+				    		  .addComponent(datePicker)
+				    		  .addComponent(delete)
+				    		  .addComponent(back))
+				      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+				           .addComponent(titleTF)
+				           .addComponent(noteArea))
+				      
+				);
+		layout.setVerticalGroup(
+				   layout.createParallelGroup()
+				      .addGroup(layout.createSequentialGroup()
+				    		  .addComponent(save)
+				    		  .addComponent(alertL)
+				    		  .addComponent(datePicker)
+				    		  .addComponent(delete)
+				    		  .addComponent(back))
+				      .addGroup(layout.createSequentialGroup()
+				           .addComponent(titleTF)
+				           .addComponent(noteArea))
+				      
+				);
+		frame.pack();
+		frame.setSize(500,500);
+		frame.setVisible(true);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
-		
+	
 	}
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(500, 500);
-		Writing_note writingNote = new Writing_note();
-		frame.add(writingNote);
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//
+//		Writing_note writingNote = new Writing_note();
+//
+//	}
 }
