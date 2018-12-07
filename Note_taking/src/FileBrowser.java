@@ -13,10 +13,12 @@ public class FileBrowser extends JApplet implements ActionListener{
     //c3
     JButton logOut = new JButton("Log Out");
     JButton[] noteBut;
+    Container cp = getContentPane();
+    GroupLayout layout;
 	public FileBrowser() { 
 	
-		Container cp = getContentPane();	
-		GroupLayout layout = new GroupLayout(cp);
+			
+		layout = new GroupLayout(cp);
 	    cp.setLayout(layout) ; //not needed as container default is BorderLayout
 		
 	    //c4
@@ -62,7 +64,8 @@ public class FileBrowser extends JApplet implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == newNote) {
-			System.out.println("Halo ");
+			add(new EditingNote(),this);
+			
 		}
 		else if (e.getSource() == calendar) {
 			System.out.println("Halo "+e.getSource().toString());
