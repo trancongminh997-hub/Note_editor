@@ -41,20 +41,18 @@ public class EditingNote extends JApplet implements ActionListener {
 	JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 	//Set labels and buttons
 	JLabel alertL = new JLabel("Alerting Date: ");
+	JLabel notification = new JLabel();
 	JButton save = new JButton("Save");
 	JButton delete = new JButton("Delete");
 	JButton back = new JButton("Back");
 	JTextField titleTF = new JTextField();
 	JTextArea noteArea = new JTextArea(20,40);
 	JPanel Writing_note = new JPanel(new GridLayout(4,2));
-//	JPanel panel = new JPanel();
 	Container contentPane = getContentPane();
 	public EditingNote(){
 		save.addActionListener(this);
 		delete.addActionListener(this);
 		back.addActionListener(this);
-//		JFrame frame = new JFrame();
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		GroupLayout layout = new GroupLayout(contentPane);
 		
@@ -73,7 +71,8 @@ public class EditingNote extends JApplet implements ActionListener {
 				    		  .addComponent(back))
 				      .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				           .addComponent(titleTF)
-				           .addComponent(noteArea))
+				           .addComponent(noteArea)
+				           .addComponent(notification))
 				      
 				);
 		layout.setVerticalGroup(
@@ -86,8 +85,8 @@ public class EditingNote extends JApplet implements ActionListener {
 				    		  .addComponent(back))
 				      .addGroup(layout.createSequentialGroup()
 				           .addComponent(titleTF)
-				           .addComponent(noteArea))
-				      
+				           .addComponent(noteArea)
+				           .addComponent(notification))     
 				);
 //		frame.pack();
 //		frame.setSize(500,500);
@@ -96,20 +95,29 @@ public class EditingNote extends JApplet implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		//set Back button
 		if(e.getSource() == back){
 			Login login = (Login) getParent();
 			login.cl.show(login, "fb");
 		}
+		//set Delete button
 		if(e.getSource() == delete) {
 			titleTF.setText("");
 			noteArea.setText("");
+			//set datePicker is null
 			datePicker.getModel().setValue(null);;
 		}
-	
+		if(e.getSource() == save) {
+			String getTitleValue = titleTF.getText();
+			String getNoteValue = noteArea.getText();
+			Date getDatePickerValue = (Date) datePicker.getModel().getValue();
+			//Check condition of note.
+			if(getTitleValue.equals("")||getNoteValue.equals("")) {
+				notification.setText("Please enter all information of the note.");
+				titleTF.setText("");
+				noteArea.setText("");
+				datePicker.getModel().setValue(null);
+			}
+		}
 	}
-//	public static void main(String[] args) {
-//
-//		Writing_note writingNote = new Writing_note();
-//
-//	}
 }
