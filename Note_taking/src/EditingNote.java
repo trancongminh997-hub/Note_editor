@@ -39,6 +39,9 @@ public class EditingNote extends JApplet implements ActionListener {
 	SqlDateModel model = new SqlDateModel();
 	JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
 	JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+	//Set current Date
+	Calendar calendar = Calendar.getInstance();
+	java.sql.Date currentDate = new java.sql.Date(calendar.getTime().getTime());
 	//Set labels and buttons
 	JLabel alertL = new JLabel("Alerting Date: ");
 	JLabel notification = new JLabel();
@@ -88,9 +91,6 @@ public class EditingNote extends JApplet implements ActionListener {
 				           .addComponent(noteArea)
 				           .addComponent(notification))     
 				);
-//		frame.pack();
-//		frame.setSize(500,500);
-//		frame.setVisible(true);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -109,14 +109,25 @@ public class EditingNote extends JApplet implements ActionListener {
 		}
 		if(e.getSource() == save) {
 			String getTitleValue = titleTF.getText();
-			String getNoteValue = noteArea.getText();
+			String getContentValue = noteArea.getText();
 			Date getDatePickerValue = (Date) datePicker.getModel().getValue();
 			//Check condition of note.
-			if(getTitleValue.equals("")||getNoteValue.equals("")) {
+			if(getTitleValue.equals("")||getContentValue.equals("")) {
 				notification.setText("Please enter all information of the note.");
 				titleTF.setText("");
 				noteArea.setText("");
 				datePicker.getModel().setValue(null);
+			}
+			else {
+				try {
+					DBConnection conn = new DBConnection();
+					if(getDatePickerValue!=null) {
+						conn.insertNote(new Note(getContentValue,getTitleValue,currentDate,ownerID,getDatePickerValue));
+					}
+				} catch (IllegalAccessException | InstantiationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 	}

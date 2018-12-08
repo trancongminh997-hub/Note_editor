@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Sat Dec 08 15:17:50 ICT 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0167-8ce4-e481-000006c71bf0 
-on database directory D:\Hoc tap\Troy\Software engineer I\SE1\Note_taking\EDITOR with class loader sun.misc.Launcher$AppClassLoader@2a139a55 
-Loaded from file:/D:/Hoc%20tap/Troy/Software%20engineer%20I/SE1/Note_taking/lib/derby.jar
+Sat Dec 08 16:15:31 ICT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0167-8d19-b4dc-00000e3938f0 
+on database directory C:\Users\OS\git\Note_taking\Note_taking\EDITOR with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
+Loaded from file:/C:/Users/OS/git/Note_taking/Note_taking/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_144-b01
-user.dir=D:\Hoc tap\Troy\Software engineer I\SE1\Note_taking
+java.runtime.version=1.8.0_172-b11
+user.dir=C:\Users\OS\git\Note_taking\Note_taking
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

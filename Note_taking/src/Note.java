@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.Optional;
 
 public class Note {
 	private int noteId;
@@ -15,6 +16,14 @@ public class Note {
 		this.title = title;
 		this.createdDate = createdDate;
 		this.ownerId = ownerId;
+	}
+	
+	public Note(String content, String title, Date createdDate, int ownerId, Date alertedDate) {
+		this.content = content;
+		this.title = title;
+		this.createdDate = createdDate;
+		this.ownerId = ownerId;
+		this.alertDate = alertedDate;
 	}
 	public int getNoteId() {
 		return noteId;
