@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.StringTokenizer;
@@ -61,30 +62,22 @@ public class Login extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource() == login) {
+		if(e.getSource() == login && passTF.getPassword().length>0 && userTF.getText().length()>0) {
 			try {
 				// replace by db
-				BufferedReader input = new BufferedReader(new FileReader("passwords.txt"));
-				String pass = null;
-				String line = input.readLine();
-				while(line != null) {
-					StringTokenizer st = new StringTokenizer(line);
-					if(userTF.getText().equals(st.nextToken()))
-						pass = st.nextToken();
-					line = input.readLine();
-				}
-				input.close();
+				DBConnection newConn = new DBConnection();
+				User checkedUser =  newConn.checkUser(userTF.getText());
 				
 				//based on username, correct password is return in variable pass
 				//we hash input password  
-				MessageDigest md = MessageDigest.getInstance("SHA-256");
-				md.update(new String(passTF.getPassword()).getBytes());
-				byte byteData[] = md.digest();
-				StringBuffer sb = new StringBuffer();
-				for(int i = 0; i < byteData.length; i++)
-					sb.append(Integer.toString((byteData[i] & 0xFF) + 0x100, 16).substring(1));
+				MessageDigest md = MessageDigest.getInstance("SHA-1");
+				String toHash = new String(passTF.getPassword());
+				md.update(toHash.getBytes(),0, toHash.length() );
+				String hash = null;
+				hash = new BigInteger(1,md.digest()).toString(16).substring(0, 29);
+				
 				//and then compare these two
-				if(pass.equals(sb.toString())) {
+				if(checkedUser != null && checkedUser.getPassword().equals(hash)) {
 					//add(new FileBrowser(userTF.getText()),"fb");
 					add(new FileBrowser(),"fb");
 					cl.show(this, "fb");
@@ -92,13 +85,16 @@ public class Login extends JPanel implements ActionListener {
 					passTF.setText("");
 					userTF.setText("");
 				}
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InstantiationException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -120,11 +116,11 @@ public class Login extends JPanel implements ActionListener {
 		frame.setVisible(true);
 		
 		DBConnection newConnection = new DBConnection();
-		User user = new User("phuc","minh");
+//		User user = new User("phuc","minh");
 //		newConnection.insertUser(user);
-		User user2 = newConnection.checkUser("phuc");
-		if(user2 != null) {
-			System.out.println("Tim duoc Minh roi: "+user2.getPassword());
+//		User user2 = newConnection.checkUser("phuc");
+//		if(user2 != null) {
+//			System.out.println("Tim duoc Phuc roi: "+user2.getPassword());
 		}
 	}
-}
+
