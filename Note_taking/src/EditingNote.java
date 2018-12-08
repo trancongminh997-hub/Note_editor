@@ -96,7 +96,10 @@ public class EditingNote extends JApplet implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(e.getSource() == back){
+			Login login = (Login) getParent();
+			login.cl.show(login, "fb");
+		}
 	
 	}
 //	public static void main(String[] args) {
