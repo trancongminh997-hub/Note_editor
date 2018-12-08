@@ -100,6 +100,11 @@ public class EditingNote extends JApplet implements ActionListener {
 			Login login = (Login) getParent();
 			login.cl.show(login, "fb");
 		}
+		if(e.getSource() == delete) {
+			titleTF.setText("");
+			noteArea.setText("");
+			datePicker.getModel().setValue(null);;
+		}
 	
 	}
 //	public static void main(String[] args) {
