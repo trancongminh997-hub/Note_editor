@@ -48,14 +48,14 @@ public class EditingNote extends JApplet implements ActionListener {
 	JTextArea noteArea = new JTextArea(20,40);
 	JPanel Writing_note = new JPanel(new GridLayout(4,2));
 //	JPanel panel = new JPanel();
-	
+	Container contentPane = getContentPane();
 	public EditingNote(){
 		save.addActionListener(this);
 		delete.addActionListener(this);
 		back.addActionListener(this);
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Container contentPane = frame.getContentPane();
+//		JFrame frame = new JFrame();
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		GroupLayout layout = new GroupLayout(contentPane);
 		
 		contentPane.setLayout(layout);
@@ -89,9 +89,9 @@ public class EditingNote extends JApplet implements ActionListener {
 				           .addComponent(noteArea))
 				      
 				);
-		frame.pack();
-		frame.setSize(500,500);
-		frame.setVisible(true);
+//		frame.pack();
+//		frame.setSize(500,500);
+//		frame.setVisible(true);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
