@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -35,6 +36,7 @@ import org.jdatepicker.impl.UtilDateModel;
 //import net.codejava.swing.DateLabelFormatter;
 
 public class EditingNote extends JApplet implements ActionListener {
+	int noteId, ownerId;
 	//Set date picker
 	SqlDateModel model = new SqlDateModel();
 	JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
@@ -52,7 +54,9 @@ public class EditingNote extends JApplet implements ActionListener {
 	JTextArea noteArea = new JTextArea(20,40);
 	JPanel Writing_note = new JPanel(new GridLayout(4,2));
 	Container contentPane = getContentPane();
-	public EditingNote(){
+	public EditingNote(int noteId, int ownerId){
+		this.noteId = noteId;
+		this.ownerId = ownerId;
 		save.addActionListener(this);
 		delete.addActionListener(this);
 		back.addActionListener(this);
@@ -122,9 +126,19 @@ public class EditingNote extends JApplet implements ActionListener {
 				try {
 					DBConnection conn = new DBConnection();
 					if(getDatePickerValue!=null) {
-						conn.insertNote(new Note(getContentValue,getTitleValue,currentDate,ownerID,getDatePickerValue));
+						conn.insertNote(new Note(getContentValue,getTitleValue,currentDate,ownerId,getDatePickerValue));
+//						conn.shutdown();
 					}
+					else {
+						conn.insertNote(new Note(getContentValue,getTitleValue,currentDate,ownerId));
+					}
+					Login login = (Login) getParent();
+					login.add(new FileBrowser(ownerId),"fb");
+					login.cl.show(login, "fb");
 				} catch (IllegalAccessException | InstantiationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

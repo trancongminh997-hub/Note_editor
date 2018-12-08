@@ -79,7 +79,7 @@ public class Login extends JPanel implements ActionListener {
 				//and then compare these two
 				if(checkedUser != null && checkedUser.getPassword().equals(hash)) {
 					//add(new FileBrowser(userTF.getText()),"fb");
-					add(new FileBrowser(),"fb");
+					add(new FileBrowser(checkedUser.getuserId()),"fb");
 					cl.show(this, "fb");
 					System.out.println("You have loged in");
 					passTF.setText("");

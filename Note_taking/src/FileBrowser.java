@@ -3,7 +3,7 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class FileBrowser extends JApplet implements ActionListener{
-	
+	int userId;
 	int row = 5;
 	int col = 1;
 	//c1
@@ -15,7 +15,8 @@ public class FileBrowser extends JApplet implements ActionListener{
     JButton[] noteBut;
     Container cp = getContentPane();
     GroupLayout layout;
-	public FileBrowser() { 
+	public FileBrowser(int userId) { 
+		this.userId = userId;
 		layout = new GroupLayout(cp);
 	    cp.setLayout(layout) ; //not needed as container default is BorderLayout
 	    //c4
@@ -64,7 +65,7 @@ public class FileBrowser extends JApplet implements ActionListener{
 			//get parent is login 
 			Login login = (Login) getParent();
 			// add new object is EditingNote()
-			login.add(new EditingNote(),"EN");
+			login.add(new EditingNote(0,userId),"EN");
 			// show object out
 			login.cl.show(login, "EN");
 		}
