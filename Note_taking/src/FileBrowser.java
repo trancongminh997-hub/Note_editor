@@ -16,13 +16,10 @@ public class FileBrowser extends JApplet implements ActionListener{
     Container cp = getContentPane();
     GroupLayout layout;
 	public FileBrowser() { 
-	
-			
 		layout = new GroupLayout(cp);
 	    cp.setLayout(layout) ; //not needed as container default is BorderLayout
-		
 	    //c4
-	    JPanel jp = new JPanel( ) ;
+	    JPanel jp = new JPanel();
 	    jp.setLayout( new GridLayout( row, 1 ) ) ;
 		this.noteBut = new 	JButton[row];
 	    for(int i = 0 ; i < row ; i++) {
@@ -58,14 +55,18 @@ public class FileBrowser extends JApplet implements ActionListener{
 	    newNote.addActionListener(this);
 	    calendar.addActionListener(this);
 	    logOut.addActionListener(this);
-	    
+	
 	  }
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == newNote) {
-			add(new EditingNote(),this);
-			
+			//get parent is login 
+			Login login = (Login) getParent();
+			// add new object is EditingNote()
+			login.add(new EditingNote(),"EN");
+			// show object out
+			login.cl.show(login, "EN");
 		}
 		else if (e.getSource() == calendar) {
 			System.out.println("Halo "+e.getSource().toString());
