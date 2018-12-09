@@ -135,8 +135,6 @@ public class FileBrowser extends JApplet implements ActionListener{
 	public ArrayList<Note> loadNotes(int userId) throws IllegalAccessException, InstantiationException, SQLException {
 		DBConnection newConn = new  DBConnection();
 		ArrayList<Note> notes = newConn.browseNoteList(userId);
-//		newConn.shutdown();
-		System.out.println("Size of notes: "+notes.size());
 		return notes;
 		
 	}
