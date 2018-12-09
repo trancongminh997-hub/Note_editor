@@ -66,7 +66,8 @@ public class EditingNote extends JApplet implements ActionListener {
 			titleTF.setText(note.getTitle());
 			noteArea.setText(note.getContent());
 			Date alert = (Date) note.getAlertDate();
-//			datePicker.getModel().setDate(alert.getYear(), alert.getMonth(), alert.getDay());
+			this.model.setValue(alert);
+			model.setSelected(true);
 		}
 		save.addActionListener(this);
 		delete.addActionListener(this);
@@ -149,7 +150,7 @@ public class EditingNote extends JApplet implements ActionListener {
 			datePicker.getModel().setValue(null);
 			if(note != null) {
 				try {
-					conn.deleteNote(noteId);
+					conn.deleteNote(this.noteId);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
