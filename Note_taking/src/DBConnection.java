@@ -108,10 +108,13 @@ public class DBConnection {
 		return reUser;
 	}
 	public ArrayList<Note> browseNoteList(int userId) throws SQLException {
+		String new_userId = String.valueOf(userId);
+		
+		
 		Statement s = null;
 		ResultSet rs;
 		s = conn.createStatement();
-		rs = s.executeQuery("SELECT * FROM APP.Note WHERE ownerID = '"+userId+"'");
+		rs = s.executeQuery("SELECT * FROM APP.Note WHERE ownerID = "+userId);
 		if (!rs.next()) {
 			System.out.println("There 's no note");
 			return null;
@@ -188,7 +191,38 @@ public class DBConnection {
 	    psUpdate.executeQuery();
 	    System.out.println("Updated");
 	}
+
+	public Note selectNote(int noteId) throws SQLException {
+		Statement s = null;
+		ResultSet rs;
+				
+		s = conn.createStatement();
+		rs = s.executeQuery("SELECT * FROM APP.Note WHERE ID = "+noteId);
+		
+		if (!rs.next()) {
+			return null;
+        }
+		//ID , content  title  createdDate , alertDate , ownerID 
+		Note reUser = new Note();
+		reUser.setNoteId(rs.getInt(1));
+		reUser.setContent(rs.getString(2));
+		reUser.setTitle(rs.getString(3));
+		reUser.setCreatedDate(rs.getDate(4));
+		reUser.setAlertDate(rs.getDate(5));
+		reUser.setOwnerId(rs.getInt(6));
+		s.close();
+		rs.close();
+		return reUser;
+	}
 	public void shutdown() throws SQLException {
 		DriverManager.getConnection("jdbc:derby:EDITOR;shutdown=true");
+	}
+	public void deleteNote(int noteId) throws SQLException {
+		Statement s = null;
+				
+		s = conn.createStatement();
+		s.execute("DELETE FROM APP.Note WHERE ID = "+noteId);
+		
+
 	}
 }

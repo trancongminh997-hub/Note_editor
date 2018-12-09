@@ -1,8 +1,15 @@
 ----------------------------------------------------------------
+<<<<<<< Upstream, based on branch 'master' of https://github.com/trancongminh997/SE1.git
 Sat Dec 08 17:29:35 ICT 2018:
 Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0167-8d5d-84de-00000e394110 
 on database directory C:\Users\OS\git\Note_taking\Note_taking\EDITOR with class loader sun.misc.Launcher$AppClassLoader@73d16e93 
 Loaded from file:/C:/Users/OS/git/Note_taking/Note_taking/lib/derby.jar
+=======
+Sun Dec 09 09:41:07 ICT 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0167-90d6-fb99-000006c70970 
+on database directory D:\Hoc tap\Troy\Software engineer I\SE1\Note_taking\EDITOR with class loader sun.misc.Launcher$AppClassLoader@2a139a55 
+Loaded from file:/D:/Hoc%20tap/Troy/Software%20engineer%20I/SE1/Note_taking/lib/derby.jar
+>>>>>>> 780951d FileBrowser_9:55_DEC_09
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_172-b11
 user.dir=C:\Users\OS\git\Note_taking\Note_taking

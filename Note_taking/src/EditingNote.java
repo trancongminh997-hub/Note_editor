@@ -36,7 +36,11 @@ import org.jdatepicker.impl.UtilDateModel;
 //import net.codejava.swing.DateLabelFormatter;
 
 public class EditingNote extends JApplet implements ActionListener {
+
 	int noteId, ownerId;
+
+	
+
 	//Set date picker
 	SqlDateModel model = new SqlDateModel();
 	JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
@@ -54,9 +58,24 @@ public class EditingNote extends JApplet implements ActionListener {
 	JTextArea noteArea = new JTextArea(20,40);
 	JPanel Writing_note = new JPanel(new GridLayout(4,2));
 	Container contentPane = getContentPane();
-	public EditingNote(int noteId, int ownerId){
+
+	@SuppressWarnings("deprecation")
+	public EditingNote(int noteId, int ownerId) throws SQLException, IllegalAccessException, InstantiationException{
 		this.noteId = noteId;
 		this.ownerId = ownerId;
+		
+		if(this.ownerId==0) {
+			DBConnection newConn = new DBConnection();
+			Note note = newConn.selectNote(this.noteId);
+			titleTF.setText(note.getTitle());
+			noteArea.setText(note.getContent());
+			datePicker.getModel().setDay(note.getAlertDate().getDay());
+			datePicker.getModel().setMonth(note.getAlertDate().getMonth());
+			datePicker.getModel().setYear(note.getAlertDate().getYear());
+		}
+		
+		
+
 		save.addActionListener(this);
 		delete.addActionListener(this);
 		back.addActionListener(this);
@@ -122,6 +141,7 @@ public class EditingNote extends JApplet implements ActionListener {
 				noteArea.setText("");
 				datePicker.getModel().setValue(null);
 			}
+
 			else {
 				try {
 					DBConnection conn = new DBConnection();
@@ -143,6 +163,5 @@ public class EditingNote extends JApplet implements ActionListener {
 					e1.printStackTrace();
 				}
 			}
-		}
-	}
-}
+
+}}}
