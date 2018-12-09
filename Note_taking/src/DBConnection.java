@@ -166,18 +166,7 @@ public class DBConnection {
 	    }
 	}
 	public void updateNote(Note noteUpdated) throws SQLException {
-//		Optional<String> contentOpt, Optional<String> titleOpt, Optional<Date> alertedDateOpt) {
-//		if(!contentOpt.isPresent() && !titleOpt.isPresent() && !alertedDateOpt.isPresent()) {}
-//		else {
-//			String content = contentOpt.isPresent() ? "content" : "";
-//			String content_val = contentOpt.isPresent() ? contentOpt.get() : "";
-//			
-//			String title = titleOpt.isPresent() ? "title" : "";
-//			String title_val = titleOpt.isPresent() ? titleOpt.get() : "";
-//			
-//			String alertDate = alertedDateOpt.isPresent() ? "alertDate" : "";
-//			Date alertDate_val = alertedDateOpt.isPresent() ? alertedDateOpt.get() : ;
-//		}
+
 		PreparedStatement psUpdate;
 	    ArrayList<Statement> statements = new ArrayList<Statement>();
 

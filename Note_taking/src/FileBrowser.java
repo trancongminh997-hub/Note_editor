@@ -7,7 +7,7 @@ import java.awt.*;
 public class FileBrowser extends JApplet implements ActionListener{
 
 	
-	int row = 10;
+	int row;
 	
 	int userId;
 
@@ -30,30 +30,44 @@ public class FileBrowser extends JApplet implements ActionListener{
 
 		layout = new GroupLayout(cp);
 	    cp.setLayout(layout) ; //not needed as container default is BorderLayout
+	    int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED ;
+	    int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER ;
+	    
+	    
+//	    JList list = new JList();
+//	    list.setFixedCellHeight(40);
+//	    list.setFixedCellWidth(370);
+//	    list.setSize(370, 350);
 	    //c4
 	    JPanel jp = new JPanel();
 	    if(notes != null) {
 	    	this.row = notes.size();
 	    	
-	    
-		    jp.setLayout( new GridLayout( row, 1 ) ) ;
+	    	
+	    	   
+		    jp.setLayout( new GridLayout(row,1) ) ;
+		    jp.setSize(new Dimension(370, 400));
+		    
 			this.noteBut = new 	JButton[row];
 		    for(int i = 0 ; i < row ; i++) {
-		    		    
-		    	noteBut[i] = new JButton("Button "+i);
+		    	String title = notes.get(i).getTitle().length()>25 ?   
+		    					notes.get(i).getTitle().substring(0, 24) 
+		    					: notes.get(i).getTitle();
+		    	String date = notes.get(i).getCreatedDate().toString();
+		    	noteBut[i] = new JButton("<html><b>0</b><br><i>1</i></html>".replaceAll("0", title).replaceAll("1", date));
 		    	
-		    	noteBut[i].setSize(350, 40);//(new Dimension(350, 40));
+		    	
 		    	//noteBut[i].setMinimumSize(new Dimension(350, 40));
 		    	
 		    	noteBut[i].addActionListener(this);
 		    	noteBut[i].setActionCommand(String.valueOf(notes.get(i).getNoteId()));
-		    	jp.add(noteBut[i]);
+		    	noteBut[i].setSize(370, 40);//(new Dimension(350, 40));
+		    	jp.add(noteBut[i],i);
+		    	System.out.println("Add button "+(i+1));
 		    }
 	    }
-	    int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED ;
-	    int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED ;
-	    JScrollPane js = new JScrollPane( jp, v, h ) ;
-
+//	    list.add(noteBut);
+	    JScrollPane js = new JScrollPane(jp,v, h ) ;
 	    
 	    layout.setAutoCreateGaps(true);
 	    layout.setAutoCreateContainerGaps(true);
@@ -122,6 +136,7 @@ public class FileBrowser extends JApplet implements ActionListener{
 		DBConnection newConn = new  DBConnection();
 		ArrayList<Note> notes = newConn.browseNoteList(userId);
 //		newConn.shutdown();
+		System.out.println("Size of notes: "+notes.size());
 		return notes;
 		
 	}

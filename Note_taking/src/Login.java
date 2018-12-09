@@ -116,11 +116,7 @@ public class Login extends JPanel implements ActionListener {
 		frame.setVisible(true);
 		
 		DBConnection newConnection = new DBConnection();
-//		User user = new User("phuc","minh");
-//		newConnection.insertUser(user);
-//		User user2 = newConnection.checkUser("phuc");
-//		if(user2 != null) {
-//			System.out.println("Tim duoc Phuc roi: "+user2.getPassword());
+
 		}
 	}
 
