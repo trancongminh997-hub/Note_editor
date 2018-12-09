@@ -187,7 +187,7 @@ public class DBConnection {
 	    psUpdate.setString(2, noteUpdated.getTitle());
 	    psUpdate.setDate(3, (Date) noteUpdated.getAlertDate());
 	    psUpdate.setInt(4, noteUpdated.getNoteId());
-	    psUpdate.executeQuery();
+	    psUpdate.executeUpdate();
 	    System.out.println("Updated");
 	}
 
