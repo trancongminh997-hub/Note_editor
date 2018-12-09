@@ -109,8 +109,6 @@ public class DBConnection {
 	}
 	public ArrayList<Note> browseNoteList(int userId) throws SQLException {
 		String new_userId = String.valueOf(userId);
-		
-		
 		Statement s = null;
 		ResultSet rs;
 		s = conn.createStatement();
@@ -220,10 +218,7 @@ public class DBConnection {
 	}
 	public void deleteNote(int noteId) throws SQLException {
 		Statement s = null;
-				
 		s = conn.createStatement();
 		s.execute("DELETE FROM APP.Note WHERE ID = "+noteId);
-		
-
 	}
 }

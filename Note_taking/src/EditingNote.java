@@ -38,9 +38,6 @@ import org.jdatepicker.impl.UtilDateModel;
 public class EditingNote extends JApplet implements ActionListener {
 
 	int noteId, ownerId;
-
-	
-
 	//Set date picker
 	SqlDateModel model = new SqlDateModel();
 	JDatePanelImpl datePanel = new JDatePanelImpl(model, new Properties());
@@ -58,24 +55,19 @@ public class EditingNote extends JApplet implements ActionListener {
 	JTextArea noteArea = new JTextArea(20,40);
 	JPanel Writing_note = new JPanel(new GridLayout(4,2));
 	Container contentPane = getContentPane();
-
+	DBConnection conn = new DBConnection();
+	Note note = null;
 	@SuppressWarnings("deprecation")
 	public EditingNote(int noteId, int ownerId) throws SQLException, IllegalAccessException, InstantiationException{
 		this.noteId = noteId;
 		this.ownerId = ownerId;
-		
-		if(this.ownerId==0) {
-			DBConnection newConn = new DBConnection();
-			Note note = newConn.selectNote(this.noteId);
+		if(this.noteId!=0) {
+			note = conn.selectNote(this.noteId);
 			titleTF.setText(note.getTitle());
 			noteArea.setText(note.getContent());
-			datePicker.getModel().setDay(note.getAlertDate().getDay());
-			datePicker.getModel().setMonth(note.getAlertDate().getMonth());
-			datePicker.getModel().setYear(note.getAlertDate().getYear());
+			Date alert = (Date) note.getAlertDate();
+//			datePicker.getModel().setDate(alert.getYear(), alert.getMonth(), alert.getDay());
 		}
-		
-		
-
 		save.addActionListener(this);
 		delete.addActionListener(this);
 		back.addActionListener(this);
@@ -121,40 +113,25 @@ public class EditingNote extends JApplet implements ActionListener {
 		//set Back button
 		if(e.getSource() == back){
 			Login login = (Login) getParent();
+			try {
+				login.add(new FileBrowser(this.ownerId),"fb");
+			} catch (IllegalAccessException | InstantiationException | SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			login.cl.show(login, "fb");
 		}
-		//set Delete button
 		if(e.getSource() == delete) {
 			titleTF.setText("");
 			noteArea.setText("");
 			//set datePicker is null
-			datePicker.getModel().setValue(null);;
-		}
-		if(e.getSource() == save) {
-			String getTitleValue = titleTF.getText();
-			String getContentValue = noteArea.getText();
-			Date getDatePickerValue = (Date) datePicker.getModel().getValue();
-			//Check condition of note.
-			if(getTitleValue.equals("")||getContentValue.equals("")) {
-				notification.setText("Please enter all information of the note.");
-				titleTF.setText("");
-				noteArea.setText("");
-				datePicker.getModel().setValue(null);
-			}
-
-			else {
+			datePicker.getModel().setValue(null);
+			//Drop note in database
+			if(this.noteId != 0) {
+				DBConnection conn;
 				try {
-					DBConnection conn = new DBConnection();
-					if(getDatePickerValue!=null) {
-						conn.insertNote(new Note(getContentValue,getTitleValue,currentDate,ownerId,getDatePickerValue));
-//						conn.shutdown();
-					}
-					else {
-						conn.insertNote(new Note(getContentValue,getTitleValue,currentDate,ownerId));
-					}
-					Login login = (Login) getParent();
-					login.add(new FileBrowser(ownerId),"fb");
-					login.cl.show(login, "fb");
+					conn = new DBConnection();
+					conn.deleteNote(this.noteId);
 				} catch (IllegalAccessException | InstantiationException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -163,5 +140,61 @@ public class EditingNote extends JApplet implements ActionListener {
 					e1.printStackTrace();
 				}
 			}
-
-}}}
+		}
+		//set Delete button
+		if(e.getSource() == delete) {
+			titleTF.setText("");
+			noteArea.setText("");
+			//set datePicker is null
+			datePicker.getModel().setValue(null);
+			if(note != null) {
+				try {
+					conn.deleteNote(noteId);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+		//set condition for save note (Update or insert new one)
+		if(e.getSource() == save) {
+			String getTitleValue = titleTF.getText();
+			String getContentValue = noteArea.getText();
+			Date getDatePickerValue = (Date) datePicker.getModel().getValue();
+			//Check condition of note.
+			if(getTitleValue.equals("")||getContentValue.equals("")) {
+				notification.setText("Please enter all information of the note.");
+			}
+			else {
+				try {
+					if(note == null) {
+						if(getDatePickerValue != null) {
+							conn.insertNote(new Note(getContentValue,getTitleValue,currentDate,ownerId,getDatePickerValue));
+						}
+						else {
+							conn.insertNote(new Note(getContentValue,getTitleValue,currentDate,ownerId));
+						}
+					}
+					else {
+						note.setTitle(getTitleValue);
+						note.setContent(getContentValue);
+						note.setCreatedDate(currentDate);
+						note.setAlertDate(getDatePickerValue);
+						conn.updateNote(note);
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				Login login = (Login) getParent();
+				try {
+					login.add(new FileBrowser(this.ownerId),"fb");
+				} catch (IllegalAccessException | InstantiationException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				login.cl.show(login, "fb");
+			}
+		}
+	}
+}
