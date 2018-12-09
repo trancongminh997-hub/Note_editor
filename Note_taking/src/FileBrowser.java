@@ -43,7 +43,7 @@ public class FileBrowser extends JApplet implements ActionListener{
 	    if(notes != null) {
 	    	this.row = notes.size();
 	    	
-	    	
+	    	System.out.println("Size "+row);
 	    	   
 		    jp.setLayout( new GridLayout(row,1) ) ;
 		    jp.setSize(new Dimension(370, 400));
