@@ -112,7 +112,7 @@ public class FileBrowser extends JApplet implements ActionListener{
 			login.cl.show(login, "EN");
 		}
 		else if (e.getSource() == calendar) {
-			System.out.println("Halo "+e.getSource().toString());
+//			System.out.println("Halo "+e.getSource().toString());
 		}
 		else if (e.getSource() == logOut) {
 			Login login = (Login) getParent();
