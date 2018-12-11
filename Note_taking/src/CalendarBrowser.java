@@ -25,14 +25,9 @@ public class CalendarBrowser extends JApplet implements ActionListener {
 	 CalendarBrowser(int userId) throws IllegalAccessException, InstantiationException, SQLException {
 		 
 		 this.userId=userId;
-//		 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		 this.setTitle("Swing Calandar");
 		 layout = new GroupLayout(cp);
 		 cp.setLayout(layout) ; //not needed as container default is BorderLayout
 		 
-//		 this.setSize(300,200);
-//		 this.setLayout(new BorderLayout());
-//		 this.setVisible(true);
  
 		 calPanel = new JPanel();
 		 calPanel.setLayout(new BorderLayout());
@@ -180,34 +175,23 @@ public class CalendarBrowser extends JApplet implements ActionListener {
 		    	System.out.println("Add button "+(i+1));
 		    }
 	    }
-	    js= new JScrollPane(jp,v, h ) ;
+	    JScrollPane js_= new JScrollPane(jp,v, h ) ;
 	    layout.setHorizontalGroup(
 	    		layout.createSequentialGroup()
-	    			.addComponent(js)
+	    			.addComponent(jp)
 	    			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 	    		           .addComponent(calPanel)
 	    		           .addComponent(back))
 	    			);
-//	    layout.setHorizontalGroup(
-//	    		layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//	    		.addComponent(calPanel)
-//	    		.addComponent(js)
-//	    		.addComponent(back));
+
 	    
 	    layout.setVerticalGroup(
 	    		layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-	    			.addComponent(js)
+	    			.addComponent(jp)
 	    			.addGroup(layout.createSequentialGroup()
 	    					.addComponent(calPanel)
 	    					.addComponent(back)));
-//	    layout.setVerticalGroup(
-//	    		layout.createSequentialGroup()
-//	    		.addComponent(calPanel)
-//	    		.addComponent(js)
-//	    		.addComponent(back));
-//	    js.repaint();
-//	    cp.revalidate();
-//	    cp.repaint();
+
 	}
 	void updateMonth() {
 	    cal.set(Calendar.DAY_OF_MONTH, 1);
