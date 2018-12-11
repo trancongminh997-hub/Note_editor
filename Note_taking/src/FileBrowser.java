@@ -44,8 +44,8 @@ public class FileBrowser extends JApplet implements ActionListener{
 	    	this.row = notes.size();
 	    	
 	    	System.out.println("Size "+row);
-	    	   
-		    jp.setLayout( new GridLayout(row,1) ) ;
+	    	BoxLayout boxlayout = new BoxLayout(jp, BoxLayout.Y_AXIS);   
+		    jp.setLayout(boxlayout); // new GridLayout(row,1) ) ;
 		    jp.setSize(new Dimension(370, 400));
 		    
 			this.noteBut = new 	JButton[row];
@@ -112,7 +112,21 @@ public class FileBrowser extends JApplet implements ActionListener{
 			login.cl.show(login, "EN");
 		}
 		else if (e.getSource() == calendar) {
-//			System.out.println("Halo "+e.getSource().toString());
+			System.out.println("Halo "+e.getSource().toString());
+			Login login = (Login) getParent();
+			try {
+				login.add(new CalendarBrowser(userId), "cal");
+			} catch (IllegalAccessException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (InstantiationException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			login.cl.show(login, "cal");
 		}
 		else if (e.getSource() == logOut) {
 			Login login = (Login) getParent();
