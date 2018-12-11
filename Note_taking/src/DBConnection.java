@@ -221,4 +221,44 @@ public class DBConnection {
 		s = conn.createStatement();
 		s.execute("DELETE FROM APP.Note WHERE ID = "+noteId);
 	}
+	@SuppressWarnings("deprecation")
+	public ArrayList<Note> browseAlertNoteList(int userId, String selectedDate) throws SQLException {
+				
+		System.out.println("Date before query: "+selectedDate);
+		Statement s = null;
+		ResultSet rs;
+		s = conn.createStatement();
+		rs = s.executeQuery("SELECT * FROM APP.Note WHERE ownerID = "+userId+" AND CAST(alertDate as VARCHAR(10)) = '"+selectedDate+"'");
+		
+		ArrayList<Note> notelist = new ArrayList<Note>();
+		if (!rs.next()) {
+			System.out.println("There 's no note");
+			return null;
+		}
+		else {
+			Note newNote = new Note();
+			newNote.setNoteId(rs.getInt(1));
+			newNote.setContent(rs.getString(2));
+			newNote.setTitle(rs.getString(3));
+			newNote.setCreatedDate(rs.getDate(4));
+			newNote.setAlertDate(rs.getDate(5));
+			newNote.setOwnerId(rs.getInt(6));
+			notelist.add(newNote);
+			System.out.println("Truy van: "+rs.getDate(5).toString());
+		}
+		
+		
+		while(rs.next()){
+			Note newNote = new Note();
+			newNote.setNoteId(rs.getInt(1));
+			newNote.setContent(rs.getString(2));
+			newNote.setTitle(rs.getString(3));
+			newNote.setCreatedDate(rs.getDate(4));
+			newNote.setAlertDate(rs.getDate(5));
+			newNote.setOwnerId(rs.getInt(6));
+			notelist.add(newNote);
+			System.out.println("Truy van: "+rs.getDate(5).toString());
+		}
+		return notelist;
+	}
 }
