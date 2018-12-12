@@ -2,6 +2,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
@@ -13,13 +14,19 @@ public class CalendarBrowser extends JApplet implements ActionListener {
 	 Calendar cal = new GregorianCalendar();
 	 JLabel label;
 	 JTable table;
-	 
+	 Calendar calendar = Calendar.getInstance();
+	 java.sql.Date currentDate = new java.sql.Date(calendar.getTime().getTime());
+	 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+	 String today = dateFormat.format(currentDate);
 	 Container cp = getContentPane();
 	 GroupLayout layout;
-	 
+	 int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED ;
+	 int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER ;
 	 JButton back = new JButton("Back");
 	 ArrayList<Note> notes;
 	 JScrollPane js;
+	 JScrollPane listNotesScroll;
+	 JPanel jp;
 	 JPanel calPanel;
 	 int years, months, days; 	 
 	 CalendarBrowser(int userId) throws IllegalAccessException, InstantiationException, SQLException {
@@ -89,7 +96,9 @@ public class CalendarBrowser extends JApplet implements ActionListener {
 	                String selectedDate = ""+years+"-"+months+"-"+days;
 	                System.out.println("Parse to util.Date: "+selectedDate.toString());
 	                try {
-						renderJs(userId, selectedDate);
+						listNotesScroll = renderJs(userId, selectedDate);
+						layout.replace(js, listNotesScroll);
+						js = listNotesScroll;
 					} catch (IllegalAccessException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -108,34 +117,30 @@ public class CalendarBrowser extends JApplet implements ActionListener {
 	    // 
 	    back.addActionListener(this);
 	    //
-	    js = new JScrollPane();
-	    renderJs(this.userId, "2018-12-15");
+	    js= new JScrollPane(jp,v, h ) ;
+	    js = renderJs(this.userId, today);
 	    
-//	    layout.setHorizontalGroup(
-//	    		layout.createSequentialGroup()
-//	    			.addComponent(calPanel)
-//	    			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//	    		           .addComponent(js)
-//	    		           .addComponent(back))
-//	    			);
-//	    layout.setVerticalGroup(
-//	    		layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//	    			.addComponent(calPanel)
-//	    			.addGroup(layout.createSequentialGroup()
-//	    					.addComponent(js)
-//	    					.addComponent(back)));
+	    layout.setHorizontalGroup(
+	    		layout.createSequentialGroup()
+	    			.addComponent(calPanel)
+	    			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+	    		           .addComponent(js)
+	    		           .addComponent(back))
+	    			);
+	    layout.setVerticalGroup(
+	    		layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+	    			.addComponent(calPanel)
+	    			.addGroup(layout.createSequentialGroup()
+	    					.addComponent(js)
+	    					.addComponent(back)));
 	}
-	public void renderJs(int userId, String selectedDate) throws IllegalAccessException, InstantiationException, SQLException {
-		
+	public JScrollPane renderJs(int userId, String selectedDate) throws IllegalAccessException, InstantiationException, SQLException {
 		notes = loadNotes(userId, selectedDate);
-		JPanel jp = new JPanel();
+		jp = new JPanel();
+		JScrollPane newJs = new JScrollPane();
 		BoxLayout boxlayout = new BoxLayout(jp, BoxLayout.Y_AXIS);
-
 		JButton[] noteBut;
 		int row;
-		int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED ;
-		int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER ;
-		
 	    if(notes != null) {
 	    	row = notes.size();
 	    	
@@ -174,24 +179,23 @@ public class CalendarBrowser extends JApplet implements ActionListener {
 		    	jp.add(noteBut[i],i);
 		    	System.out.println("Add button "+(i+1));
 		    }
+		    newJs = new JScrollPane(jp,v,h);
 	    }
-	    JScrollPane js_= new JScrollPane(jp,v, h ) ;
-	    layout.setHorizontalGroup(
-	    		layout.createSequentialGroup()
-	    			.addComponent(jp)
-	    			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-	    		           .addComponent(calPanel)
-	    		           .addComponent(back))
-	    			);
 
-	    
-	    layout.setVerticalGroup(
-	    		layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-	    			.addComponent(jp)
-	    			.addGroup(layout.createSequentialGroup()
-	    					.addComponent(calPanel)
-	    					.addComponent(back)));
-
+//		    layout.setHorizontalGroup(
+//			layout.createSequentialGroup()
+//				.addComponent(calPanel)
+//				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//			           .addComponent(js)
+//			           .addComponent(back))
+//				);
+//		    layout.setVerticalGroup(
+//			layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+//				.addComponent(calPanel)
+//				.addGroup(layout.createSequentialGroup()
+//						.addComponent(js)
+//						.addComponent(back)));
+	    return newJs;
 	}
 	void updateMonth() {
 	    cal.set(Calendar.DAY_OF_MONTH, 1);
