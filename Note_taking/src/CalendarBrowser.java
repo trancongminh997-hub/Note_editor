@@ -97,7 +97,9 @@ public class CalendarBrowser extends JApplet implements ActionListener {
 	                System.out.println("Parse to util.Date: "+selectedDate.toString());
 	                try {
 						listNotesScroll = renderJs(userId, selectedDate);
+						//replace js in layout
 						layout.replace(js, listNotesScroll);
+						//set js again.
 						js = listNotesScroll;
 					} catch (IllegalAccessException e) {
 						// TODO Auto-generated catch block
@@ -118,8 +120,9 @@ public class CalendarBrowser extends JApplet implements ActionListener {
 	    back.addActionListener(this);
 	    //
 	    js= new JScrollPane(jp,v, h ) ;
+	    //get notes of current date
 	    js = renderJs(this.userId, today);
-	    
+	    // Show layout
 	    layout.setHorizontalGroup(
 	    		layout.createSequentialGroup()
 	    			.addComponent(calPanel)
@@ -181,20 +184,6 @@ public class CalendarBrowser extends JApplet implements ActionListener {
 		    }
 		    newJs = new JScrollPane(jp,v,h);
 	    }
-
-//		    layout.setHorizontalGroup(
-//			layout.createSequentialGroup()
-//				.addComponent(calPanel)
-//				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//			           .addComponent(js)
-//			           .addComponent(back))
-//				);
-//		    layout.setVerticalGroup(
-//			layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//				.addComponent(calPanel)
-//				.addGroup(layout.createSequentialGroup()
-//						.addComponent(js)
-//						.addComponent(back)));
 	    return newJs;
 	}
 	void updateMonth() {
